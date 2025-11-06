@@ -1,0 +1,27 @@
+# Declarative training pipeline used by n00t when invoking `school.trainingRun`.
+version: 1
+name: default
+description: "Prepare dataset, fine-tune a checkpoint, and evaluate the run."
+parameters:
+  dataset:
+    description: Dataset slug the handlers will operate on.
+    default: default
+stages:
+  - name: prepare-dataset
+    description: Sync curated datasets into the feature store.
+    handler: school_lab.handlers.prepare_dataset
+    params:
+      splits:
+        train: 0.9
+        eval: 0.1
+      seed: 42
+  - name: fine-tune-model
+    description: Run supervised fine-tuning on the latest workspace corpus.
+    handler: school_lab.handlers.fine_tune_model
+  - name: evaluate-model
+    description: Execute regression suites defined in telemetry manifest.
+    handler: school_lab.handlers.evaluate_model
+artifacts:
+  - name: model_checkpoint
+    type: model
+    description: "Fine-tuned checkpoint stored under runs/<pipeline>/<timestamp>/artifacts/model.safetensors."
