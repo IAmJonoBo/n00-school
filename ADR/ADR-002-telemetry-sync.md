@@ -1,6 +1,7 @@
 # ADR-002: Telemetry Sync to Cortex
 
 ## Status
+
 Accepted – 2025-11-04
 
 ## Context

@@ -32,13 +32,13 @@ Outputs land under `runs/default/<timestamp>/` with `metadata.json`, metrics, an
 
 ## Key directories
 
-| Path | Purpose |
-| --- | --- |
-| `pipelines/` | YAML pipeline definitions referenced by the shell + Python orchestrators. |
-| `scripts/` | Entry points (`run-training.sh`, `run-training.py`) used by humans and automation. |
-| `school_lab/` | Implementation of training/evaluation handlers. |
-| `datasets/` | Source datasets (anon/anonymised) used by pipelines. |
-| `runs/` | Outputs (artefacts, metrics, metadata) produced by pipeline executions. |
+| Path          | Purpose                                                                            |
+| ------------- | ---------------------------------------------------------------------------------- |
+| `pipelines/`  | YAML pipeline definitions referenced by the shell + Python orchestrators.          |
+| `scripts/`    | Entry points (`run-training.sh`, `run-training.py`) used by humans and automation. |
+| `school_lab/` | Implementation of training/evaluation handlers.                                    |
+| `datasets/`   | Source datasets (anon/anonymised) used by pipelines.                               |
+| `runs/`       | Outputs (artefacts, metrics, metadata) produced by pipeline executions.            |
 
 ## Contribution guardrails
 

@@ -100,4 +100,3 @@ def evaluate_model(context: StageContext) -> Dict[str, Any]:
         "metrics": metrics,
         "logs": logs,
     }
-

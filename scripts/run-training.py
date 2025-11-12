@@ -35,10 +35,18 @@ def resolve_pipeline_path(pipeline: str) -> Path:
 
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="Run n00-school training pipeline.")
-    parser.add_argument("pipeline", nargs="?", default=None, help="Pipeline name or path (YAML).")
-    parser.add_argument("--dataset", default=None, help="Dataset slug (defaults to pipeline parameter).")
-    parser.add_argument("--check", action="store_true", help="Validation mode; do not execute stages.")
-    parser.add_argument("--output", default=None, help="Optional path to write JSON metadata.")
+    parser.add_argument(
+        "pipeline", nargs="?", default=None, help="Pipeline name or path (YAML)."
+    )
+    parser.add_argument(
+        "--dataset", default=None, help="Dataset slug (defaults to pipeline parameter)."
+    )
+    parser.add_argument(
+        "--check", action="store_true", help="Validation mode; do not execute stages."
+    )
+    parser.add_argument(
+        "--output", default=None, help="Optional path to write JSON metadata."
+    )
     args = parser.parse_args(argv)
 
     payload = load_payload()
@@ -52,12 +60,16 @@ def main(argv: Optional[list[str]] = None) -> int:
     runner = PipelineRunner(pipeline_path, dataset)
     if args.check or payload.get("check"):
         runner.run(dry_run=True)
-        print(f"[run-training] Validation succeeded for pipeline={pipeline_path.name} dataset={dataset}")
+        print(
+            f"[run-training] Validation succeeded for pipeline={pipeline_path.name} dataset={dataset}"
+        )
         return 0
 
     result = runner.run()
     run_dir = result.get("run_dir")
-    print(f"[run-training] Pipeline completed. Status={result['status']} run_dir={run_dir}")
+    print(
+        f"[run-training] Pipeline completed. Status={result['status']} run_dir={run_dir}"
+    )
 
     if args.output or payload.get("output"):
         output_path = Path(args.output or payload["output"])

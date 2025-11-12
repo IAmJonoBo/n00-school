@@ -20,7 +20,9 @@ def utc_now() -> str:
 def resolve_handler(handler_path: str) -> Callable[..., Any]:
     module_name, _, attr = handler_path.rpartition(".")
     if not module_name or not attr:
-        raise ValueError(f"Invalid handler path '{handler_path}'. Expected 'module.attr'.")
+        raise ValueError(
+            f"Invalid handler path '{handler_path}'. Expected 'module.attr'."
+        )
     module = importlib.import_module(module_name)
     try:
         return getattr(module, attr)
@@ -71,14 +73,20 @@ class PipelineRunner:
 
     def _load_pipeline(self) -> Dict[str, Any]:
         if not self.pipeline_path.exists():
-            raise FileNotFoundError(f"Pipeline definition not found: {self.pipeline_path}")
+            raise FileNotFoundError(
+                f"Pipeline definition not found: {self.pipeline_path}"
+            )
         with self.pipeline_path.open("r", encoding="utf-8") as fh:
             pipeline = yaml.safe_load(fh) or {}
         if "stages" not in pipeline or not isinstance(pipeline["stages"], list):
-            raise ValueError(f"Pipeline {self.pipeline_path} missing 'stages' definition")
+            raise ValueError(
+                f"Pipeline {self.pipeline_path} missing 'stages' definition"
+            )
         return pipeline
 
-    def run(self, *, dry_run: bool = False, run_dir: Optional[Path] = None) -> Dict[str, Any]:
+    def run(
+        self, *, dry_run: bool = False, run_dir: Optional[Path] = None
+    ) -> Dict[str, Any]:
         timestamp = utc_now()
         stages_result: List[StageResult] = []
 
@@ -109,7 +117,9 @@ class PipelineRunner:
             stage_name = stage.get("name", "unnamed-stage")
             handler_path = stage.get("handler")
             if not handler_path:
-                raise ValueError(f"Stage '{stage_name}' missing handler in pipeline {self.pipeline_path}")
+                raise ValueError(
+                    f"Stage '{stage_name}' missing handler in pipeline {self.pipeline_path}"
+                )
             handler = resolve_handler(handler_path)
 
             started = utc_now()
@@ -122,7 +132,12 @@ class PipelineRunner:
                 timestamp=timestamp,
                 metadata={},
             )
-            result = StageResult(name=stage_name, status="succeeded", started_at=started, completed_at=started)
+            result = StageResult(
+                name=stage_name,
+                status="succeeded",
+                started_at=started,
+                completed_at=started,
+            )
 
             try:
                 outputs = handler(stage_context)
@@ -161,7 +176,9 @@ class PipelineRunner:
         run_dir.mkdir(parents=True, exist_ok=True)
         return run_dir
 
-    def _write_metadata(self, run_dir: Path, status: str, stages: List[StageResult]) -> Path:
+    def _write_metadata(
+        self, run_dir: Path, status: str, stages: List[StageResult]
+    ) -> Path:
         try:
             relative_pipeline = str(self.pipeline_path.relative_to(self.workspace))
         except ValueError:

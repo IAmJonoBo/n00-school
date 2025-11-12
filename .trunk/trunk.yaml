@@ -18,11 +18,11 @@ runtimes:
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
   enabled:
-    - renovate@42.3.0
+    - renovate@42.5.4
     - taplo@0.10.0
     - bandit@1.8.6
     - black@25.11.0
-    - checkov@3.2.491
+    - checkov@3.2.492
     - git-diff-check
     - isort@7.0.0
     - markdownlint@0.45.0

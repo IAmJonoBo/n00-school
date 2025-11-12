@@ -26,15 +26,15 @@ This will:
 
 ## Repository layout
 
-| Path | Purpose |
-| ---- | ------- |
-| `pipelines/` | Declarative specs with handler references (`handler: school_lab.handlers.prepare_dataset`). |
-| `scripts/run-training.py` | Python orchestrator that parses YAML, resolves handlers, and persists metadata. |
-| `scripts/run-training.sh` | CLI wrapper invoked by n00t / humans; forwards arguments and CAPABILITY payload. |
-| `school_lab/handlers.py` | Built-in handler library (dataset prep, fine-tuning stub, evaluation). |
-| `runs/` | Materialised outputs for each pipeline execution (`metadata.json`, artefacts, metrics). |
-| `requirements.txt` | Runtime dependencies (`pyyaml`). |
-| `tests/` | Unit tests executed via `pytest` to guarantee pipeline orchestration stays healthy. |
+| Path                      | Purpose                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------- |
+| `pipelines/`              | Declarative specs with handler references (`handler: school_lab.handlers.prepare_dataset`). |
+| `scripts/run-training.py` | Python orchestrator that parses YAML, resolves handlers, and persists metadata.             |
+| `scripts/run-training.sh` | CLI wrapper invoked by n00t / humans; forwards arguments and CAPABILITY payload.            |
+| `school_lab/handlers.py`  | Built-in handler library (dataset prep, fine-tuning stub, evaluation).                      |
+| `runs/`                   | Materialised outputs for each pipeline execution (`metadata.json`, artefacts, metrics).     |
+| `requirements.txt`        | Runtime dependencies (`pyyaml`).                                                            |
+| `tests/`                  | Unit tests executed via `pytest` to guarantee pipeline orchestration stays healthy.         |
 
 ## Pipeline anatomy
 
