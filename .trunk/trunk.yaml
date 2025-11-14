@@ -1,38 +1,58 @@
-# This file controls the behavior of Trunk: https://docs.trunk.io/cli
-# To learn more about the format of this file, see https://docs.trunk.io/reference/trunk-yaml
 version: 0.1
 cli:
   version: 1.25.0
-# Trunk provides extensibility via plugins. (https://docs.trunk.io/plugins)
 plugins:
   sources:
     - id: trunk
-      ref: v1.7.3
+      ref: v1.7.4
       uri: https://github.com/trunk-io/plugins
-# Many linters and tools depend on runtimes - configure them here. (https://docs.trunk.io/runtimes)
 runtimes:
   enabled:
     - go@1.21.0
-    - node@22.16.0
+    - node@24.11.0
     - python@3.10.8
-# This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
   enabled:
-    - renovate@42.5.4
+    - renovate@42.8.1
     - taplo@0.10.0
     - bandit@1.8.6
-    - black@25.11.0
-    - checkov@3.2.492
-    - git-diff-check
     - isort@7.0.0
+    - black@25.11.0
+    - checkov@3.2.493
+    - git-diff-check
     - markdownlint@0.45.0
     - osv-scanner@2.2.4
     - prettier@3.6.2
     - ruff@0.14.4
     - shellcheck@0.11.0
     - shfmt@3.6.0
-    - trufflehog@3.90.13
+    - trufflehog@3.91.0
     - yamllint@1.37.1
+    - biome-lint
+  definitions:
+    - name: biome-lint
+      batch: true
+      commands:
+        - name: lint
+          run: |
+            # Use workspace-managed Biome to avoid per-repo installs that duplicate storage
+            pnpm -w exec biome check --reporter compact .
+          output: pass_fail
+          success_codes:
+            - 0
+            - 1
+    - name: antora-validate
+      batch: true
+      commands:
+        - name: lint
+          run: >
+            # Prefer Antora from a sibling `n00plicate` repo; fallback to workspace Antora
+            pnpm -C ../n00plicate exec antora --log-failure-level=error --asciidoc-sourcemap antora-playbook.yml || \
+            pnpm -w exec antora --log-failure-level=error --asciidoc-sourcemap antora-playbook.yml
+          output: pass_fail
+          success_codes:
+            - 0
+            - 1
 actions:
   enabled:
     - trunk-announce
